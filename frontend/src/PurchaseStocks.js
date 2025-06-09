@@ -48,6 +48,33 @@ export default function PurchaseStocks() {
 
     setNetWorth(prev => prev - cost)
     setPurchasedStocks(prev => [...prev, newPurchase])
+
+    // Send purchase to backend
+    fetch('/api/purchase', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: 'demoUser', // Replace with actual user from auth if available
+        symbol: stockData.symbol,
+        price: stockData.c,
+        quantity,
+        total: cost.toFixed(2)
+      })
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to store purchase')
+        return res.json()
+      })
+      .then(data => {
+        // Optionally handle response
+      })
+      .catch(err => {
+        console.error(err)
+        alert('Failed to store purchase in backend')
+      })
+
     alert(`Purchased ${quantity} shares of ${stockData.symbol}`)
   }
 
