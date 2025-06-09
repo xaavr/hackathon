@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "username": "testuser",
+    "password": "1234567890",
+    "stocks": []
+  },
+  {
+    "username": "testing",
+    "password": "$2b$10$IbBn0XOz9mYn3TSBBqUe..qFZK1gtxpbAIGSz.Ea4woy3NiJfwWSS",
+    "stocks": []
+  },
+  {
+    "username": "Hiii",
+    "password": "$2b$10$8zo8wXrokgr475MEAZAtIujl7vD22WgKk9mAI13T7jAJ2rwYZkdxa",
+    "stocks": []
+  }
+]
