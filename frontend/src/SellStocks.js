@@ -7,17 +7,7 @@ export default function SellStocks() {
   const [quantity, setQuantity] = useState(1)
   const [netWorth, setNetWorth] = useState(874782903.54)
   const [soldStocks, setSoldStocks] = useState([])
-  const [holdings, setHoldings] = useState({
-    AAPL: 10,
-    TSLA: 5,
-    GOOGL: 8,
-    MSFT: 12,
-    AMZN: 7,
-    NVDA: 3,
-    META: 6,
-    JPM: 4,
-    DIS: 9
-  })
+  const [holdings, setHoldings] = useState({})
 
   const mockStocks = {
     AAPL: { symbol: 'AAPL', c: 186.25, h: 187.88, l: 185.75 },
