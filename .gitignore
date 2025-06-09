@@ -1,0 +1,43 @@
+# === OS-specific ===
+.DS_Store
+Thumbs.db
+
+# === IDEs & Editors ===
+.vscode/
+.idea/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# === Logs ===
+*.log
+logs/
+
+# === Environment files ===
+# Ignore real .env files, but you can commit a .env.example
+.env
+.env.local
+.env.*.local
+
+# === Backend (Spring Boot) ===
+/backend/target/
+/backend/*.log
+/backend/*.pid
+
+# H2 database files (if any)
+*.db
+
+# === Frontend (React/Vite/CRA) ===
+/frontend/node_modules/
+/frontend/build/
+/frontend/dist/
+/frontend/.cache/
+/frontend/.parcel-cache/
+
+# lockfiles are ok to commit (keep frontend reproducible):
+# package-lock.json or yarn.lock
+
+# === Docker compose overrides (if you add one) ===
+docker-compose.override.yml
