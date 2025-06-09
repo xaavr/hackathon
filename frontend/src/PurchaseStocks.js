@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Card from './components/Card'
+import './PurchaseStocks.css'
 
 export default function PurchaseStocks() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -52,87 +52,63 @@ export default function PurchaseStocks() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8 font-inter">
-      <div className="max-w-5xl mx-auto space-y-6">
-        <h1 className="text-3xl font-bold text-gray-800">Purchase Stocks</h1>
-        <p className="text-lg text-gray-600">
-          Net Worth:{' '}
-          <span className="text-emerald-600 font-semibold">
-            ${netWorth.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-          </span>
-        </p>
-
-        <Card title="Search Stock">
-          <div className="flex gap-4">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="e.g., AAPL"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
-            />
-            <button
-              onClick={handleSearch}
-              className="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700 transition"
-            >
-              Search
-            </button>
-          </div>
-        </Card>
-
-        {stockData && stockData.c && (
-          <Card title={stockData.symbol}>
-            <div className="space-y-2 text-gray-700">
-              <p>
-                <strong>Price:</strong> ${stockData.c.toFixed(2)}
-              </p>
-              <p className="text-sm text-gray-500">
-                High: ${stockData.h.toFixed(2)} | Low: ${stockData.l.toFixed(2)}
-              </p>
-
-              <div className="flex items-center gap-4 mt-4">
-                <input
-                  type="number"
-                  min="1"
-                  value={quantity}
-                  onChange={e => setQuantity(parseInt(e.target.value))}
-                  className="w-24 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                />
-                <button
-                  onClick={handlePurchase}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                  + Purchase
-                </button>
-              </div>
-
-              <p className="text-sm mt-2">
-                Total:{' '}
-                <strong>${(stockData.c * quantity).toFixed(2)}</strong>
-              </p>
-            </div>
-          </Card>
-        )}
-
-        {purchasedStocks.length > 0 && (
-          <div className="space-y-6 mt-12">
-            <h2 className="text-2xl font-semibold text-gray-800">Your Purchases</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {purchasedStocks.map((stock, index) => (
-                <div
-                  key={index}
-                  className="rounded-xl bg-blue-50 shadow-sm p-5 text-gray-800 hover:shadow-md transition"
-                >
-                  <p className="text-xl font-bold mb-2">{stock.symbol}</p>
-                  <p className="text-sm mb-1">Quantity: <span className="font-medium">{stock.quantity}</span></p>
-                  <p className="text-sm mb-1">Price: <span className="font-medium">${stock.price.toFixed(2)}</span></p>
-                  <p className="text-sm">Total: <span className="font-semibold">${stock.total}</span></p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+    <div className="container">
+      <div className="header">
+        <h1 className="title">📈 Purchase Stocks</h1>
+        <div className="netWorth">
+          Net Worth: ${netWorth.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+        </div>
       </div>
+
+      <div className="card">
+        <h2 className="cardTitle">Search Stock</h2>
+        <div className="searchRow">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder="e.g., AAPL"
+            className="input"
+          />
+          <button onClick={handleSearch} className="button">Search</button>
+        </div>
+      </div>
+
+      {stockData && stockData.c && (
+        <div className="card">
+          <h2 className="cardTitle">{stockData.symbol} - ${stockData.c.toFixed(2)}</h2>
+          <div className="stockCard">
+            <p>High: ${stockData.h.toFixed(2)} | Low: ${stockData.l.toFixed(2)}</p>
+            <div className="searchRow">
+              <input
+                type="number"
+                min="1"
+                value={quantity}
+                onChange={e => setQuantity(parseInt(e.target.value))}
+                className="input"
+              />
+              <button onClick={handlePurchase} className="button">+ Purchase</button>
+            </div>
+            <p>Total Cost: <strong>${(stockData.c * quantity).toFixed(2)}</strong></p>
+          </div>
+        </div>
+      )}
+
+      {purchasedStocks.length > 0 && (
+        <div>
+          <h2 className="cardTitle">Your Purchases</h2>
+          <div className="purchaseList">
+            {purchasedStocks.map((stock, index) => (
+              <div key={index} className="purchaseItem">
+                <h3>{stock.symbol}</h3>
+                <p>Quantity: {stock.quantity}</p>
+                <p>Price: ${stock.price.toFixed(2)}</p>
+                <p>Total: ${stock.total}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
