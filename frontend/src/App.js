@@ -1,10 +1,13 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react-router-dom';
-import Overview from './Overview.js';
-import PurchaseStocks from './PurchaseStocks.js';
-import SellStocks from './SellStocks.js';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, NavLink } from 'react-router-dom';
+import Overview from './Overview';
+import PurchaseStocks from './PurchaseStocks';
+import SellStocks from './SellStocks';
+import Login from './Login';
+import Register from './Register';
+import ProtectedRoute from './ProtectedRoute';
 import './App.css';
-import './index.css'
+import './index.css';
 
 function Sidebar() {
   return (
@@ -24,16 +27,50 @@ function Sidebar() {
 }
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const auth = localStorage.getItem('authenticated');
+    const storedUser = localStorage.getItem('user');
+    if (auth === 'true' && storedUser) {
+      setIsAuthenticated(true);
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   return (
     <Router>
       <div className="dashboard">
-        <Sidebar />
+        {isAuthenticated && <Sidebar />}
+
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<Navigate to="/overview" />} />
-            <Route path="/overview" element={<Overview />} />
-            <Route path="/purchase" element={<PurchaseStocks />} />
-            <Route path="/sell" element={<SellStocks />} />
+            {/* Public Routes */}
+            <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} setUser={setUser} />} />
+            <Route path="/register" element={<Register />} />
+
+            {/* Protected Routes */}
+            <Route path="/overview" element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Overview user={user} />
+              </ProtectedRoute>
+            } />
+            <Route path="/purchase" element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <PurchaseStocks user={user} />
+              </ProtectedRoute>
+            } />
+            <Route path="/sell" element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <SellStocks user={user} />
+              </ProtectedRoute>
+            } />
+
+            {/* Always redirect root path to /login */}
+            <Route path="/" element={<Navigate to="/login" />} />
+
+            {/* Catch-all */}
             <Route path="*" element={<h2>404 - Page Not Found</h2>} />
           </Routes>
         </main>
